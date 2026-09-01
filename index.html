@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>undwennich — Patricia Reschenbach</title>
+  <style>
+    @font-face {
+      font-family: 'PPMonument';
+      src: url('fonts/PPMonumentExtended-Regular.woff2') format('woff2'),
+           url('fonts/PPMonumentExtended-Regular.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Inter';
+      src: url('fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #211568;
+      --red:  #de2241;
+      --white: #ffffff;
+    }
+
+    html, body {
+      overflow-x: hidden;
+      background: var(--white);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--navy);
+    }
+
+    /* ────────────────────────────────────────────
+       HERO
+    ──────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Kopfzeile ── */
+    .hero-header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 28px 50px 0;
+    }
+
+    .artist-name {
+      font-family: 'PPMonument', sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--red);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .ig-link {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--navy);
+      text-decoration: none;
+    }
+    .ig-link:hover { opacity: 0.6; }
+
+    /* ── Bühnenbild: Titel + Image ── */
+    .hero-stage {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 50px;
+      min-height: 420px;
+    }
+
+    /* Bild, positioniert hinter den Wörtern */
+    .stage-image {
+      position: absolute;
+      left: 18.6%;        /* Figma: x=278/1493 */
+      top: 0;
+      width: 59.3%;       /* Figma: 885/1493 */
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .stage-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      will-change: transform;
+    }
+
+    /* ── Titelwörter ── */
+    .hero-title {
+      position: relative;
+      z-index: 5;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: 15px;
+      user-select: none;
+    }
+
+    .hero-title span {
+      display: block;
+      font-family: 'PPMonument', sans-serif;
+      font-size: clamp(56px, 7.7vw, 115px);
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1;
+      letter-spacing: 5.75px;
+
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    .hero-title span.visible {
+      animation: wordIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Staggered delays */
+    .t-und  { align-self: flex-start; animation-delay: 0.1s !important; }
+    .t-wenn { align-self: flex-end;   animation-delay: 0.45s !important; }
+    .t-ich  { align-self: flex-start; margin-left: clamp(40px, 19%, 284px); animation-delay: 0.8s !important; }
+
+    @keyframes wordIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Meta-Leiste ── */
+    .hero-meta {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      padding: 0 50px 48px;
+      margin-top: 40px;
+
+      opacity: 0;
+      animation: fadeIn 0.8s ease 1.4s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .meta-block {
+      padding-right: 24px;
+    }
+
+    .meta-label {
+      display: block;
+      font-family: 'PPMonument', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--navy);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .meta-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--navy);
+    }
+
+    .meta-body strong {
+      font-weight: 600;
+    }
+
+    .meta-body em {
+      font-style: italic;
+    }
+
+    .meta-body a {
+      color: var(--red);
+      text-decoration: underline;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .hero-header { padding: 20px 28px 0; }
+      .artist-name { font-size: 20px; }
+      .ig-link { font-size: 13px; }
+
+      .hero-stage { padding: 0 28px; }
+
+      .stage-image {
+        left: 10%;
+        width: 80%;
+        top: 10px;
+      }
+
+      .t-ich { margin-left: clamp(20px, 10%, 120px); }
+
+      .hero-meta {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        padding: 0 28px 40px;
+        margin-top: 28px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero-header { padding: 16px 20px 0; }
+      .artist-name { font-size: 16px; }
+      .ig-link { display: none; }
+
+      .hero-stage { padding: 0 20px; min-height: 300px; }
+
+      .stage-image {
+        left: 0;
+        width: 100%;
+        top: 20px;
+      }
+
+      .t-ich { margin-left: 0; }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 20px 36px;
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+
+    <!-- Kopfzeile -->
+    <header class="hero-header">
+      <span class="artist-name">Patricia Reschenbach</span>
+      <a class="ig-link"
+         href="https://www.instagram.com/patricia.reschenbach/"
+         target="_blank" rel="noopener">IG: @patricia.reschenbach</a>
+    </header>
+
+    <!-- Bühnenbild -->
+    <div class="hero-stage">
+
+      <!-- Hintergrundbild (parallax via JS) -->
+      <div class="stage-image">
+        <img src="images/herobild.jpg" id="heroImg" alt="">
+      </div>
+
+      <!-- Titelwörter -->
+      <h1 class="hero-title">
+        <span class="t-und">...und</span>
+        <span class="t-wenn">wenn</span>
+        <span class="t-ich">ich</span>
+      </h1>
+
+    </div>
+
+    <!-- Meta -->
+    <div class="hero-meta">
+
+      <div class="meta-block">
+        <span class="meta-label">Vernissage</span>
+        <p class="meta-body">
+          <strong>04.09.2026</strong><br>
+          um 18:00 Uhr<br><br>
+          <em>Schreibperformance:</em><br>
+          <strong>Patricia Reschenbach</strong>
+        </p>
+      </div>
+
+      <div class="meta-block">
+        <span class="meta-label">Finissage</span>
+        <p class="meta-body">
+          <strong>18.09.2026</strong><br>
+          ab 18:00 Uhr<br>
+          um 18:30 Uhr <em>Performance:</em><br>
+          <strong>Patricia Reschenbach</strong>
+        </p>
+      </div>
+
+      <div class="meta-block">
+        <span class="meta-label">Lesung</span>
+        <p class="meta-body">
+          <strong>Leah Luna Winzely</strong><br>
+          <strong>Rina Kaçinari</strong><br>
+          <a href="http://rinakacinari.com/" target="_blank" rel="noopener">rinakacinari.com</a>
+        </p>
+      </div>
+
+      <div class="meta-block">
+        <span class="meta-label">Wo?</span>
+        <p class="meta-body">
+          <strong>Magazin</strong><br>
+          Mayergasse 3,<br>
+          1020 Wien
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <script>
+    // ── Titel-Animation beim Laden ──
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.hero-title span').forEach(span => {
+        span.classList.add('visible');
+      });
+    });
+
+    // ── Parallax auf dem Hintergrundbild ──
+    const heroImg = document.getElementById('heroImg');
+
+    function onScroll() {
+      const y = window.scrollY;
+      if (y < window.innerHeight * 1.5) {
+        heroImg.style.transform = `translateY(${y * 0.2}px) scale(1.1)`;
+      }
+    }
+
+    // Bild leicht skaliert damit Parallax keinen weißen Rand zeigt
+    heroImg.style.transform = 'translateY(0) scale(1.1)';
+    window.addEventListener('scroll', onScroll, { passive: true });
+  </script>
+
+</body>
+</html>
