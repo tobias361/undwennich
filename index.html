@@ -7,13 +7,20 @@
   <style>
     @font-face {
       font-family: 'PPMonument';
+      src: url('fonts/PPMonumentExtended-Light.woff2') format('woff2'),
+           url('fonts/PPMonumentExtended-Light.woff') format('woff');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'PPMonument';
       src: url('fonts/PPMonumentExtended-Regular.woff2') format('woff2'),
            url('fonts/PPMonumentExtended-Regular.woff') format('woff');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
     }
-
     @font-face {
       font-family: 'Inter';
       src: url('fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
@@ -32,6 +39,8 @@
       --navy: #211568;
       --red:  #de2241;
       --white: #ffffff;
+      --grey: #888888;
+      --pad: 50px;
     }
 
     html, body {
@@ -45,25 +54,25 @@
     }
 
     /* ────────────────────────────────────────────
-       HERO
+       HERO  (exakt nach Figma: 1440×644px Basis)
     ──────────────────────────────────────────── */
     .hero {
       position: relative;
-      min-height: 100svh;
       background: var(--white);
-      display: flex;
-      flex-direction: column;
       overflow: hidden;
     }
 
-    /* ── Kopfzeile ── */
+    /* Header — absolut oben */
     .hero-header {
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 10;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 28px 50px 0;
+      padding: 8px var(--pad) 0;
     }
 
     .artist-name {
@@ -84,24 +93,38 @@
     }
     .ig-link:hover { opacity: 0.6; }
 
-    /* ── Bühnenbild: Titel + Image ── */
+    /* Proportionaler Hero-Container: 1440×644 → 44.72% */
     .hero-stage {
       position: relative;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 0 50px;
-      min-height: 420px;
+      width: 100%;
+      aspect-ratio: 1440 / 644;
+      min-height: 320px;
+      max-height: 720px;
+      overflow: hidden;
     }
 
-    /* Bild, positioniert hinter den Wörtern */
+    /* Bild: zentriert (Figma: left=50%, width=883/1440) */
     .stage-image {
       position: absolute;
-      left: 18.6%;        /* Figma: x=278/1493 */
-      top: 0;
-      width: 59.3%;       /* Figma: 885/1493 */
+      left: 50%;
+      transform: translateX(-50%);
+      top: 26.24%;    /* 169/644 */
+      width: 61.32%;  /* 883/1440 */
       z-index: 1;
       overflow: hidden;
+    }
+
+    /* Ken-Burns-Wrapper: sanfter Zoom von 1.1 → 1.0 über 10s */
+    .stage-ken {
+      width: 100%;
+      height: 100%;
+      animation: kenBurns 10s ease-out forwards;
+      will-change: transform;
+    }
+
+    @keyframes kenBurns {
+      from { transform: scale(1.12); }
+      to   { transform: scale(1.04); }
     }
 
     .stage-image img {
@@ -112,53 +135,77 @@
       will-change: transform;
     }
 
-    /* ── Titelwörter ── */
+    /* Labels (werkschau + Datum) */
+    .hero-label {
+      position: absolute;
+      z-index: 6;
+      font-family: 'PPMonument', sans-serif;
+      font-size: clamp(14px, 1.94vw, 28px);
+      font-weight: 400;
+      color: var(--red);
+      white-space: nowrap;
+      opacity: 0;
+      animation: fadeIn 0.8s ease 1.6s forwards;
+    }
+
+    .hero-label-werkschau {
+      /* Figma: links-center bei x=937px → translate -50% */
+      left: 65.07%;          /* 937/1440 */
+      transform: translateX(-50%);
+      top: 18.48%;           /* 119/644 */
+    }
+
+    .hero-label-date {
+      left: 25.35%;          /* 365/1440 — Figma exakt */
+      top: 37.11%;           /* 239/644 — Figma exakt */
+    }
+
+    /* Titelwörter — absolut positioniert (Figma-Koordinaten) */
     .hero-title {
-      position: relative;
+      position: absolute;
+      inset: 0;
       z-index: 5;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding-top: 15px;
-      user-select: none;
+      pointer-events: none;
     }
 
     .hero-title span {
       display: block;
+      position: absolute;
       font-family: 'PPMonument', sans-serif;
-      font-size: clamp(56px, 7.7vw, 115px);
+      font-size: clamp(40px, 7.99vw, 115px);
       font-weight: 400;
       color: var(--navy);
       line-height: 1;
       letter-spacing: 5.75px;
-
+      white-space: nowrap;
       opacity: 0;
-      transform: translateY(24px);
     }
 
-    .hero-title span.visible {
-      animation: wordIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    .t-und  { left: 6.67%; top: 12.73%; transform: translateY(18px); }
+    .t-wenn { left: 57.99%; top: 26.24%; transform: translateY(18px); }
+    .t-ich  { left: 26.04%; top: 43.17%; transform: translateY(18px); }
+
+    /* Gestaffeltes Fade-in — schnell, sanft von unten */
+    .t-und.visible  { animation: wordFadeIn 0.5s ease-out 0.1s  forwards; }
+    .t-wenn.visible { animation: wordFadeIn 0.5s ease-out 0.3s  forwards; }
+    .t-ich.visible  { animation: wordFadeIn 0.5s ease-out 0.5s  forwards; }
+
+    @keyframes wordFadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Staggered delays */
-    .t-und  { align-self: flex-start; animation-delay: 0.1s !important; }
-    .t-wenn { align-self: flex-end;   animation-delay: 0.45s !important; }
-    .t-ich  { align-self: flex-start; margin-left: clamp(40px, 19%, 284px); animation-delay: 0.8s !important; }
-
-    @keyframes wordIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── Meta-Leiste ── */
+    /* Meta-Infos: innerhalb des Hero, 3 Spalten, Inter SemiBold 18px */
     .hero-meta {
-      position: relative;
-      z-index: 10;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 71.27%;   /* 459/644 — Figma-Position */
+      padding: 0 var(--pad);
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      padding: 0 50px 48px;
-      margin-top: 40px;
-
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      z-index: 10;
       opacity: 0;
       animation: fadeIn 0.8s ease 1.4s forwards;
     }
@@ -167,94 +214,337 @@
       to { opacity: 1; }
     }
 
-    .meta-block {
-      padding-right: 24px;
-    }
-
-    .meta-label {
-      display: block;
-      font-family: 'PPMonument', sans-serif;
-      font-size: 20px;
-      font-weight: 400;
-      color: var(--navy);
-      margin-bottom: 10px;
-      letter-spacing: -0.02em;
-    }
+    .meta-block { }
 
     .meta-body {
       font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.5;
+      font-size: clamp(12px, 1.25vw, 18px);  /* 18/1440 */
+      font-weight: 600;
+      line-height: 1.45;
       color: var(--navy);
     }
 
-    .meta-body strong {
-      font-weight: 600;
+    .meta-body em          { font-style: italic; font-weight: 400; }
+    .meta-body strong      { font-weight: 700; }
+    .meta-body a           { color: var(--navy); text-decoration: none; font-weight: 400; font-style: normal; }
+    .meta-body .meta-light { font-weight: 400; }
+
+    /* ────────────────────────────────────────────
+       WERKSCHAU
+    ──────────────────────────────────────────── */
+    /* ── ZEILEN-GRID: 1 Zeile = 659px ── */
+    .werkschau {
+      min-height: 659px;
+      padding: 27px var(--pad) 29px;
     }
 
-    .meta-body em {
-      font-style: italic;
+    .section-title {
+      font-family: 'PPMonument', sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--navy);
+      margin-bottom: 37px; /* Figma: Abstand 37px zur Intro-Text */
     }
 
-    .meta-body a {
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 29px;
+      margin-bottom: 173px; /* Figma: großer Weißraum bis Programm-Hinweise */
+    }
+
+    /* Spalten-Kinder: min-width: 0 verhindert Overflow über Spaltenrand */
+    .intro-grid > *,
+    .program-notes > *,
+    .legal-inner > *,
+    .bio-inner > *,
+    .hero-meta > * {
+      min-width: 0;
+    }
+
+    .intro-text {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(17px, 1.8vw, 26px);
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      overflow-wrap: break-word;
+    }
+
+    .intro-text em { font-style: italic; }
+
+    /* Programm-Hinweise: 3 Spalten (Figma: Inter Regular 16px, navy) */
+    .program-notes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 29px;
+      margin-bottom: 60px;
+    }
+
+    .program-notes p {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.55;
+    }
+
+    .program-notes .tamar {
       color: var(--red);
+    }
+
+    /* Row 3: Werkbilder-Sektion (659px) */
+    .werkbilder-section {
+      min-height: 659px;
+      padding: 27px var(--pad) 48px; /* 27+584+48 = 659px exakt */
+    }
+
+    /* Asymmetrisches Grid: img1 | gap+caption | img2 */
+    .werkbilder {
+      display: grid;
+      grid-template-columns: 31.87% 19.25% 31.87%;
+      /* Rest (17.01%) ist der Weißraum rechts */
+    }
+
+    .werkbilder img {
+      width: 100%;
+      aspect-ratio: 427 / 584;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Gap-Div: Caption am unteren Ende (wie bio-credit) */
+    .werkbild-gap {
+      min-width: 0;
+      padding-left: 29px;   /* Figma: x=508px, img endet bei 479px → 29px Abstand */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .werkbild-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--grey);
+      line-height: 1.6;
+      margin-top: auto; /* drückt Caption ans untere Ende des Gap-Divs = Bildunterkante */
+    }
+
+    /* ────────────────────────────────────────────
+       BIOGRAFIE
+    ──────────────────────────────────────────── */
+    /* Row 4: Bio (659px) */
+    .bio {
+      min-height: 659px;
+      padding: 0 var(--pad) 48px;
+    }
+
+    /* Bio: 656px linke Spalte + 29px Gap + 655px rechte Spalte (= identische Kolonnenteilung wie Intro) */
+    .bio-inner {
+      display: grid;
+      grid-template-columns: 656fr 655fr;
+      gap: 29px;
+      align-items: stretch; /* beide Spalten gleich hoch → Credit bündig mit Portrait-Unterkante */
+    }
+
+    /* Portrait ist in der linken Spalte rechtsbündig ausgerichtet (427px breit, in 656px Spalte) */
+    .bio-image {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .bio-image img {
+      width: 427px;
+      max-width: 100%;
+      aspect-ratio: 427 / 584;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Portrait-Wrapper damit Credit linksbündig unterm Bild sitzt */
+    .bio-portrait-wrap {
+      display: inline-block;
+    }
+
+    /* Credit: unten rechts — margin-top: auto drückt es ans Ende der Flex-Spalte
+       → bündig mit Unterkante des Portraits (Figma: top=2683px ≈ Portrait-Unterkante) */
+    .bio-credit {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--grey);
+      margin-top: auto;
+    }
+
+    /* Öffnungszeiten: zentriert, 12px, grau (Figma: y=686px, mittig) */
+    .opening-hours {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--grey);
+      text-align: center;
+      margin-bottom: 51px; /* 27px pad + 18px text + 51px = 96px → "Eine Werkschau" */
+    }
+
+    .bio-text {
+      min-width: 0;
+      overflow-wrap: break-word;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bio-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--navy);
+      margin-top: 24px;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    .bio-pdf {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--red);
+      text-decoration: none;
+      margin-top: 40px;
+    }
+    .bio-pdf:hover { opacity: 0.75; }
+
+    @media (max-width: 900px) {
+      .bio-inner { grid-template-columns: 1fr; gap: 32px; }
+      .bio-image { align-items: flex-start; }
+      .bio-image img { width: 100%; }
+    }
+
+    /* ────────────────────────────────────────────
+       KONTAKT — vorübergehend ausgeblendet
+    ──────────────────────────────────────────── */
+    .kontakt {
+      display: none;
+    }
+
+    /* ────────────────────────────────────────────
+       IMPRESSUM / DATENSCHUTZ (aufklappbar)
+    ──────────────────────────────────────────── */
+    .legal {
+    }
+
+    .legal-toggle {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 28px var(--pad);
+      font-family: 'PPMonument', sans-serif;
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+      transition: color 0.2s;
+    }
+
+    .legal-toggle:hover { color: var(--red); }
+
+    .legal-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .legal-content.open { max-height: 800px; }
+
+    .legal-inner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      padding: 0 var(--pad) 48px;
+    }
+
+    .legal-inner--4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .legal-col {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--grey);
+    }
+
+    .legal-col a {
+      color: var(--grey);
       text-decoration: underline;
     }
 
-    /* ── Responsive ── */
+    /* ────────────────────────────────────────────
+       FOOTER
+    ──────────────────────────────────────────── */
+    footer {
+      padding: 24px var(--pad);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer span,
+    footer a {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: var(--grey);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--navy); }
+
+    /* ────────────────────────────────────────────
+       RESPONSIVE
+    ──────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .hero-header { padding: 20px 28px 0; }
+      :root { --pad: 28px; }
+
       .artist-name { font-size: 20px; }
-      .ig-link { font-size: 13px; }
+      .ig-link     { font-size: 13px; }
 
-      .hero-stage { padding: 0 28px; }
+      .hero-meta { grid-template-columns: 1fr; gap: 8px; top: auto; bottom: 10px; }
 
-      .stage-image {
-        left: 10%;
-        width: 80%;
-        top: 10px;
-      }
-
-      .t-ich { margin-left: clamp(20px, 10%, 120px); }
-
-      .hero-meta {
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-        padding: 0 28px 40px;
-        margin-top: 28px;
-      }
+      .intro-grid    { grid-template-columns: 1fr; gap: 24px; }
+      .program-notes { grid-template-columns: 1fr; gap: 16px; }
+      .werkbilder { grid-template-columns: 1fr 1fr; }
+      .werkbild-gap { display: none; }
+      .kontakt-links { grid-template-columns: 1fr; gap: 12px; }
+      .legal-inner   { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 560px) {
-      .hero-header { padding: 16px 20px 0; }
       .artist-name { font-size: 16px; }
-      .ig-link { display: none; }
+      .ig-link     { display: none; }
 
-      .hero-stage { padding: 0 20px; min-height: 300px; }
+      .stage-image  { width: 90%; }
+      .hero-label   { display: none; }
+      .hero-meta    { display: none; }
 
-      .stage-image {
-        left: 0;
-        width: 100%;
-        top: 20px;
-      }
-
-      .t-ich { margin-left: 0; }
-
-      .hero-meta {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 0 20px 36px;
-        margin-top: 20px;
-      }
+      .werkbilder { grid-template-columns: 1fr; }
+      .werkbild-gap { display: none; }
+      .section-title,
+      .kontakt h2    { font-size: 22px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- ── HERO ── -->
   <section class="hero">
 
-    <!-- Kopfzeile -->
     <header class="hero-header">
       <span class="artist-name">Patricia Reschenbach</span>
       <a class="ig-link"
@@ -262,89 +552,229 @@
          target="_blank" rel="noopener">IG: @patricia.reschenbach</a>
     </header>
 
-    <!-- Bühnenbild -->
     <div class="hero-stage">
 
-      <!-- Hintergrundbild (parallax via JS) -->
       <div class="stage-image">
-        <img src="images/herobild.jpg" id="heroImg" alt="">
+        <div class="stage-ken">
+          <img src="images/herobild.jpg" id="heroImg" alt="">
+        </div>
       </div>
 
-      <!-- Titelwörter -->
+      <span class="hero-label hero-label-werkschau">werkschau</span>
+      <span class="hero-label hero-label-date">04.09.–19.09. 2026</span>
+
       <h1 class="hero-title">
-        <span class="t-und">...und</span>
+        <span class="t-und">und</span>
         <span class="t-wenn">wenn</span>
         <span class="t-ich">ich</span>
       </h1>
 
-    </div>
-
-    <!-- Meta -->
-    <div class="hero-meta">
-
-      <div class="meta-block">
-        <span class="meta-label">Vernissage</span>
-        <p class="meta-body">
-          <strong>04.09.2026</strong><br>
-          um 18:00 Uhr<br><br>
-          <em>Schreibperformance:</em><br>
-          <strong>Patricia Reschenbach</strong>
-        </p>
-      </div>
-
-      <div class="meta-block">
-        <span class="meta-label">Finissage</span>
-        <p class="meta-body">
-          <strong>18.09.2026</strong><br>
-          ab 18:00 Uhr<br>
-          um 18:30 Uhr <em>Performance:</em><br>
-          <strong>Patricia Reschenbach</strong>
-        </p>
-      </div>
-
-      <div class="meta-block">
-        <span class="meta-label">Lesung</span>
-        <p class="meta-body">
-          <strong>Leah Luna Winzely</strong><br>
-          <strong>Rina Kaçinari</strong><br>
-          <a href="http://rinakacinari.com/" target="_blank" rel="noopener">rinakacinari.com</a>
-        </p>
-      </div>
-
-      <div class="meta-block">
-        <span class="meta-label">Wo?</span>
-        <p class="meta-body">
-          <strong>Magazin</strong><br>
-          Mayergasse 3,<br>
-          1020 Wien
-        </p>
+      <!-- Meta-Infos — innerhalb des Hero, 3 Spalten (Figma: top=459/644) -->
+      <div class="hero-meta">
+        <div class="meta-block">
+          <p class="meta-body">
+            <strong>Magazin</strong><br>
+            Mayergasse 3<br>
+            <span class="meta-light">1020 Wien</span>
+          </p>
+        </div>
+        <div class="meta-block">
+          <p class="meta-body">
+            <strong>04.09.2026</strong><br>
+            um 18:00 Uhr<br>
+            <em>Schreibperformance:</em><br>
+            <strong>Patricia Reschenbach</strong>
+          </p>
+        </div>
+        <div class="meta-block">
+          <p class="meta-body">
+            <strong>18.09.2026</strong><br>
+            ab 18:00 Uhr<br>
+            <em>Lesung:</em> <strong>Leah Luna Winzely</strong><br>
+            <strong>Rina Kaçinari</strong>
+            (<a href="http://rinakacinari.com/" target="_blank" rel="noopener">rinakacinari.com</a>)<br>
+            <br>
+            um 18:30 Uhr <em>Performance:</em><br>
+            <strong>Patricia Reschenbach</strong>
+          </p>
+        </div>
       </div>
 
     </div>
 
   </section>
 
+  <!-- ── WERKSCHAU ── -->
+  <section class="werkschau">
+
+    <p class="opening-hours">Von 18:00–20:00 Uhr ist das Magazin ab ___ geöffnet und die Künstlerin anwesend.</p>
+    <h2 class="section-title">Eine Werkschau</h2>
+
+    <div class="intro-grid">
+      <p class="intro-text">
+        <em>UND WENN ICH</em> handelt von Möglichkeiten gegen patriarchale Auswüchse
+        vorzugehen, von der Not, die patriarchale Gewalt verursacht, sich über globale
+        manospherische, todbringende Gewalt zu informieren. Jede/r kann die Annäherung
+        nach eigener Möglichkeit* gestalten: von hardcore investigativ bis Lyrik
+        (hardcore bis subtil)
+      </p>
+      <p class="intro-text">
+        Es wird immer Diejenigen geben, die es sich nicht aussuchen können, das
+        Gewaltthema zu bearbeiten um von eigenen Traumata zu heilen und jene
+        Privilegierten, die eine Auseinandersetzung mit Irritation und Verunsicherung,
+        die der Thematik innewohnt, weil sie bisher anscheinend behütet durchs Leben
+        kamen. Hinsehen müssen wir alle.
+      </p>
+    </div>
+
+    <div class="program-notes">
+      <p>Rahmenprogramm wird über Instagram &amp; undwennich.wien bekannt gegeben,</p>
+      <p>Es werden Werke zu erwerben sein, die der Beratungsstelle <span class="tamar">TAMAR</span> gespendet werden.</p>
+      <p>da die Künstlerin auch Lehrerin ist und alles parallel laufen wird.</p>
+    </div>
+
+  </section>
+
+  <!-- ── WERKBILDER (Row 3: 659px) ── -->
+  <section class="werkbilder-section">
+    <div class="werkbilder">
+      <img src="images/werkbild01.jpg" alt="Werk von Patricia Reschenbach">
+      <div class="werkbild-gap">
+        <p class="werkbild-caption">Die handgeschriebenen<br>
+          Textcollagen bilden das<br>
+          „Myzel" der Grundnarration<br>
+          und entstanden durch<br>
+          Zufall teilweise im Kollektiv.</p>
+      </div>
+      <img src="images/werkbild02.jpg" alt="Werk von Patricia Reschenbach">
+    </div>
+  </section>
+
+  <!-- ── BIOGRAFIE ── -->
+  <section class="bio">
+    <div class="bio-inner">
+      <div class="bio-image">
+        <div class="bio-portrait-wrap">
+          <img src="images/portrait.jpg" alt="Patricia Reschenbach">
+        </div>
+      </div>
+      <div class="bio-text">
+        <h2 class="section-title">Biografie</h2>
+        <p class="bio-body">
+          Patricia Reschenbach, geboren 1970 in Wien, ist bildende Künstlerin und
+          Lehrerin für visuelle Kommunikation an der Höheren Graphischen Lehr- und
+          Versuchsanstalt.<br><br>
+          Ihre Arbeit verbindet persönliche Erfahrung mit politischer
+          Reflexion — über Körper, Scham, Verlust und weibliche Selbstermächtigung.<br><br>
+          Seit 2020 teilt sie ihr Atelier in der Zirkusgasse 35 mit Emma Kersten-Weymayr.
+        </p>
+        <a class="bio-pdf" href="BIO_Patricia Reschenbach.pdf" target="_blank" rel="noopener">
+          BIO_Patricia Reschenbach.pdf
+        </a>
+        <p class="bio-credit">Credit Maria Blum (2025)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── KONTAKT ── -->
+  <section class="kontakt">
+    <h2>Kontakt</h2>
+    <div class="kontakt-links">
+      <a href="mailto:patricia.reschenbach@chello.at">patricia.reschenbach@chello.at</a>
+      <a href="https://www.instagram.com/patricia.reschenbach/"
+         target="_blank" rel="noopener">@patricia.reschenbach</a>
+      <span>undwennich.wien</span>
+    </div>
+  </section>
+
+  <!-- ── IMPRESSUM ── -->
+  <div class="legal">
+    <button class="legal-toggle" onclick="toggleLegal(this)">&gt; Impressum</button>
+    <div class="legal-content">
+      <div class="legal-inner">
+        <div class="legal-col">
+          Patricia Reschenbach<br>
+          Zirkusgasse 35/9<br>
+          1020 Wien<br>
+          Österreich<br><br>
+          E-Mail: patricia.reschenbach@chello.at<br>
+          Tel: 0699 1941 01 01
+        </div>
+        <div class="legal-col">
+          Unternehmensgegenstand: Bildende Kunst / Künstlerin<br><br>
+          Mitglied der Wirtschaftskammer Wien<br>
+          Fachgruppe Kunst, Musik, unterhaltende Tätigkeit<br><br>
+          Aufsichtsbehörde: Magistrat der Stadt Wien
+        </div>
+        <div class="legal-col">
+          Inhaltlich Verantwortliche gemäß § 18 MedienG:<br>
+          Patricia Reschenbach<br><br>
+          Urheberrecht: Alle Bilder, Texte und Inhalte dieser
+          Website sind urheberrechtlich geschützt.<br><br>
+          © Patricia Reschenbach
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DATENSCHUTZ ── -->
+  <div class="legal">
+    <button class="legal-toggle" onclick="toggleLegal(this)">&gt; Datenschutz</button>
+    <div class="legal-content">
+      <div class="legal-inner legal-inner--4">
+        <div class="legal-col">
+          Diese Website sammelt keine persönlichen Daten und
+          verwendet keine Cookies oder Tracking-Tools.
+        </div>
+        <div class="legal-col">
+          Beim Aufruf der Seite speichert der Webserver automatisch
+          technische Zugriffsdaten (IP-Adresse, Uhrzeit, Browser).
+          Diese Daten werden nicht ausgewertet und nicht weitergegeben.
+        </div>
+        <div class="legal-col">
+          Kontakt per E-Mail an patricia.reschenbach@chello.at erfolgt
+          auf eigene Initiative. Anfragen werden vertraulich behandelt
+          und nicht an Dritte weitergegeben.
+        </div>
+        <div class="legal-col">
+          Verantwortlich: Patricia Reschenbach<br>
+          Zirkusgasse 35/9, 1020 Wien<br><br>
+          Aufsichtsbehörde: Österreichische Datenschutzbehörde<br>
+          <a href="https://dsb.gv.at" target="_blank" rel="noopener">dsb.gv.at</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span>© 2026 Patricia Reschenbach</span>
+    <a href="https://www.instagram.com/patricia.reschenbach/"
+       target="_blank" rel="noopener">@patricia.reschenbach</a>
+  </footer>
+
   <script>
-    // ── Titel-Animation beim Laden ──
+    // Titel-Animation
     window.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.hero-title span').forEach(span => {
-        span.classList.add('visible');
-      });
+      document.querySelectorAll('.hero-title span').forEach(s => s.classList.add('visible'));
     });
 
-    // ── Parallax auf dem Hintergrundbild ──
+    // Parallax + sanfter Scale-down beim Scrollen (gibt Tiefe)
     const heroImg = document.getElementById('heroImg');
-
-    function onScroll() {
+    heroImg.style.transform = 'translateY(0px) scale(1.1)';
+    window.addEventListener('scroll', () => {
       const y = window.scrollY;
       if (y < window.innerHeight * 1.5) {
-        heroImg.style.transform = `translateY(${y * 0.2}px) scale(1.1)`;
+        // Bild bewegt sich nach oben (Parallax) UND wird leicht kleiner
+        const scale = Math.max(0.96, 1.1 - y * 0.00009);
+        heroImg.style.transform = `translateY(${y * 0.18}px) scale(${scale})`;
       }
-    }
+    }, { passive: true });
 
-    // Bild leicht skaliert damit Parallax keinen weißen Rand zeigt
-    heroImg.style.transform = 'translateY(0) scale(1.1)';
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // Impressum / Datenschutz aufklappen
+    function toggleLegal(btn) {
+      btn.nextElementSibling.classList.toggle('open');
+    }
   </script>
 
 </body>
