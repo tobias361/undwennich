@@ -200,6 +200,8 @@
       object-fit: cover;
       object-position: center top;
       display: block;
+      animation: kenBurns 10s ease-out forwards;
+      transform-origin: center top;
     }
 
     .t-und  { left: 6.67%; top: 12.73%; transform: translateY(18px); }
@@ -803,20 +805,37 @@
   </footer>
 
   <script>
-    // Titel-Animation
+    // Titel-Animation: Wörter einblenden
     window.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.hero-title span').forEach(s => s.classList.add('visible'));
     });
 
-    // Parallax + sanfter Scale-down beim Scrollen (gibt Tiefe)
+    // Parallax-Referenzen
     const heroImg = document.getElementById('heroImg');
+    const tUnd  = document.querySelector('.t-und');
+    const tWenn = document.querySelector('.t-wenn');
+    const tIch  = document.querySelector('.t-ich');
+
+    // Initiale Transform für Bild
     heroImg.style.transform = 'translateY(0px) scale(1.1)';
+
+    // Wort-Parallax erst nach Ende der Einblend-Animation aktivieren
+    let wordParallax = false;
+    setTimeout(() => { wordParallax = true; }, 1200);
+
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
       if (y < window.innerHeight * 1.5) {
-        // Bild bewegt sich nach oben (Parallax) UND wird leicht kleiner
+        // Hauptbild: Parallax + leichter Scale-down
         const scale = Math.max(0.96, 1.1 - y * 0.00009);
         heroImg.style.transform = `translateY(${y * 0.18}px) scale(${scale})`;
+
+        // Titelwörter: nach oben weggleiten (unterschiedliche Geschwindigkeiten → Tiefenwirkung)
+        if (wordParallax) {
+          tUnd.style.transform  = `translateY(${-y * 0.30}px)`;
+          tWenn.style.transform = `translateY(${-y * 0.22}px)`;
+          tIch.style.transform  = `translateY(${-y * 0.15}px)`;
+        }
       }
     }, { passive: true });
 
