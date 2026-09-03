@@ -179,6 +179,27 @@
       letter-spacing: 5.75px;
       white-space: nowrap;
       opacity: 0;
+      z-index: 5;
+    }
+
+    /* Zweites Hero-Bild: links oben, randlos */
+    .stage-flyer {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 34.7%;   /* ~500px von 1440 — entspricht Bild-Proportion 516:735 @ 644px Höhe */
+      height: 100%;
+      z-index: 2;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeIn 1.0s ease 0.2s forwards;
+    }
+    .stage-flyer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
     }
 
     .t-und  { left: 6.67%; top: 12.73%; transform: translateY(18px); }
@@ -526,12 +547,28 @@
     }
 
     @media (max-width: 560px) {
+      :root { --pad: 20px; }
       .artist-name { font-size: 16px; }
       .ig-link     { display: none; }
 
-      .stage-image  { width: 90%; }
-      .hero-label   { display: none; }
-      .hero-meta    { display: none; }
+      .stage-image  { width: 92%; }
+
+      /* Flyer-Bild auf Mobile etwas breiter */
+      .stage-flyer { width: 44%; }
+
+      /* Labels sichtbar lassen, kleiner */
+      .hero-label { font-size: clamp(10px, 3vw, 14px); }
+
+      /* Meta: aus dem Stage herausgezogen, normal fließend unter dem Bild */
+      .hero-meta {
+        position: static;
+        opacity: 1;
+        animation: none;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 24px var(--pad) 0;
+      }
+      .meta-body { font-size: 14px; }
 
       .werkbilder { grid-template-columns: 1fr; }
       .werkbild-gap { display: none; }
@@ -554,6 +591,11 @@
 
     <div class="hero-stage">
 
+      <!-- Flyer-Bild: links oben, randlos -->
+      <div class="stage-flyer">
+        <img src="images/herobild_flyer.jpg" alt="">
+      </div>
+
       <div class="stage-image">
         <div class="stage-ken">
           <img src="images/herobild.jpg" id="heroImg" alt="">
@@ -569,37 +611,37 @@
         <span class="t-ich">ich</span>
       </h1>
 
-      <!-- Meta-Infos — innerhalb des Hero, 3 Spalten (Figma: top=459/644) -->
-      <div class="hero-meta">
-        <div class="meta-block">
-          <p class="meta-body">
-            <strong>Magazin</strong><br>
-            Mayergasse 3<br>
-            <span class="meta-light">1020 Wien</span>
-          </p>
-        </div>
-        <div class="meta-block">
-          <p class="meta-body">
-            <strong>04.09.2026</strong><br>
-            um 18:00 Uhr<br>
-            <em>Schreibperformance:</em><br>
-            <strong>Patricia Reschenbach</strong>
-          </p>
-        </div>
-        <div class="meta-block">
-          <p class="meta-body">
-            <strong>18.09.2026</strong><br>
-            ab 18:00 Uhr<br>
-            <em>Lesung:</em> <strong>Leah Luna Winzely</strong><br>
-            <strong>Rina Kaçinari</strong>
-            (<a href="http://rinakacinari.com/" target="_blank" rel="noopener">rinakacinari.com</a>)<br>
-            <br>
-            um 18:30 Uhr <em>Performance:</em><br>
-            <strong>Patricia Reschenbach</strong>
-          </p>
-        </div>
-      </div>
+    </div><!-- /hero-stage -->
 
+    <!-- Meta-Infos: desktop=absolut im Stage, mobile=normal unter Bild -->
+    <div class="hero-meta">
+      <div class="meta-block">
+        <p class="meta-body">
+          <strong>Magazin</strong><br>
+          Mayergasse 3<br>
+          <span class="meta-light">1020 Wien</span>
+        </p>
+      </div>
+      <div class="meta-block">
+        <p class="meta-body">
+          <strong>04.09.2026</strong><br>
+          um 18:00 Uhr<br>
+          <em>Schreibperformance:</em><br>
+          <strong>Patricia Reschenbach</strong>
+        </p>
+      </div>
+      <div class="meta-block">
+        <p class="meta-body">
+          <strong>18.09.2026</strong><br>
+          ab 18:00 Uhr<br>
+          <em>Lesung:</em> <strong>Leah Luna Winzely</strong><br>
+          <strong>Rina Kaçinari</strong>
+          (<a href="http://rinakacinari.com/" target="_blank" rel="noopener">rinakacinari.com</a>)<br>
+          <br>
+          um 18:30 Uhr <em>Performance:</em><br>
+          <strong>Patricia Reschenbach</strong>
+        </p>
+      </div>
     </div>
 
   </section>
