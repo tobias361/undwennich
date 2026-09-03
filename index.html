@@ -182,10 +182,10 @@
       z-index: 5;
     }
 
-    /* Zweites Hero-Bild: links oben, randlos */
+    /* Zweites Hero-Bild: links oben, leicht nach links verschoben */
     .stage-flyer {
       position: absolute;
-      left: 0;
+      left: -35px;
       top: 0;
       width: 34.7%;   /* ~500px von 1440 — entspricht Bild-Proportion 516:735 @ 644px Höhe */
       height: 100%;
@@ -459,6 +459,7 @@
        IMPRESSUM / DATENSCHUTZ (aufklappbar)
     ──────────────────────────────────────────── */
     .legal {
+      background: #f2f2f0;
     }
 
     .legal-toggle {
@@ -557,8 +558,17 @@
 
       .stage-image  { width: 92%; }
 
-      /* Flyer-Bild auf Mobile etwas breiter */
-      .stage-flyer { width: 44%; }
+      /* Flyer-Bild auf Mobile etwas breiter + nach links */
+      .stage-flyer { width: 44%; left: -15px; }
+
+      /* Stage höher damit die großen Wörter Platz haben */
+      .hero-stage { min-height: 460px; }
+
+      /* Titelwörter: größer + neue Positionen mit mehr Abstand */
+      .hero-title span { font-size: 58px !important; }
+      .t-und  { top: 7%;  left: 5%; }
+      .t-wenn { top: 34%; left: 4%; }
+      .t-ich  { top: 62%; left: 18%; }
 
       /* Labels sichtbar lassen, kleiner */
       .hero-label { font-size: clamp(10px, 3vw, 14px); }
