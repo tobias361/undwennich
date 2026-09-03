@@ -313,7 +313,9 @@
 
     .program-notes .tamar {
       color: var(--red);
+      text-decoration: none;
     }
+    .program-notes .tamar:hover { opacity: 0.7; }
 
     /* Row 3: Werkbilder-Sektion (659px) */
     .werkbilder-section {
@@ -389,8 +391,8 @@
       display: inline-block;
     }
 
-    /* Credit: unten rechts — margin-top: auto drückt es ans Ende der Flex-Spalte
-       → bündig mit Unterkante des Portraits (Figma: top=2683px ≈ Portrait-Unterkante) */
+    /* Credit: desktop=rechte Spalte unten, mobile=unter Portrait */
+    .bio-credit--mobile { display: none; }  /* auf Desktop versteckt */
     .bio-credit {
       font-family: 'Inter', sans-serif;
       font-size: 12px;
@@ -570,8 +572,13 @@
       }
       .meta-body { font-size: 14px; }
 
-      .werkbilder { grid-template-columns: 1fr; }
+      .werkbilder { grid-template-columns: 1fr; row-gap: 30px; }
       .werkbild-gap { display: none; }
+
+      /* Credit unter Portrait anzeigen, das in bio-text verstecken */
+      .bio-credit--mobile  { display: block; margin-top: 8px; }
+      .bio-credit--desktop { display: none; }
+
       .section-title,
       .kontakt h2    { font-size: 22px; }
     }
@@ -670,7 +677,7 @@
 
     <div class="program-notes">
       <p>Rahmenprogramm wird über Instagram &amp; undwennich.wien bekannt gegeben,</p>
-      <p>Es werden Werke zu erwerben sein, die der Beratungsstelle <span class="tamar">TAMAR</span> gespendet werden.</p>
+      <p>Es werden Werke zu erwerben sein, die der Beratungsstelle <a class="tamar" href="https://tamar.at/" target="_blank" rel="noopener">TAMAR</a> gespendet werden.</p>
       <p>da die Künstlerin auch Lehrerin ist und alles parallel laufen wird.</p>
     </div>
 
@@ -696,8 +703,9 @@
     <div class="bio-inner">
       <div class="bio-image">
         <div class="bio-portrait-wrap">
-          <img src="images/portrait.jpg" alt="Patricia Reschenbach">
+          <img src="images/portrait.jpg?v=2" alt="Patricia Reschenbach">
         </div>
+        <p class="bio-credit bio-credit--mobile">Credit Maria Blum (2025)</p>
       </div>
       <div class="bio-text">
         <h2 class="section-title">Biografie</h2>
@@ -709,10 +717,10 @@
           Reflexion — über Körper, Scham, Verlust und weibliche Selbstermächtigung.<br><br>
           Seit 2020 teilt sie ihr Atelier in der Zirkusgasse 35 mit Emma Kersten-Weymayr.
         </p>
-        <a class="bio-pdf" href="BIO_Patricia Reschenbach.pdf" target="_blank" rel="noopener">
+        <a class="bio-pdf" href="images/BIO_Patricia Reschenbach.pdf" target="_blank" rel="noopener">
           BIO_Patricia Reschenbach.pdf
         </a>
-        <p class="bio-credit">Credit Maria Blum (2025)</p>
+        <p class="bio-credit bio-credit--desktop">Credit Maria Blum (2025)</p>
       </div>
     </div>
   </section>
