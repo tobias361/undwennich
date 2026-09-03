@@ -819,9 +819,16 @@
     // Initiale Transform für Bild
     heroImg.style.transform = 'translateY(0px) scale(1.1)';
 
-    // Wort-Parallax erst nach Ende der Einblend-Animation aktivieren
+    // Wort-Parallax aktivieren: CSS-Animation entfernen, dann JS übernimmt transform
     let wordParallax = false;
-    setTimeout(() => { wordParallax = true; }, 1200);
+    setTimeout(() => {
+      [tUnd, tWenn, tIch].forEach(el => {
+        el.style.animation = 'none';   // animation-fill-mode forwards entfernen
+        el.style.opacity   = '1';
+        el.style.transform = 'translateY(0px)';
+      });
+      wordParallax = true;
+    }, 1200);
 
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
