@@ -92,6 +92,7 @@
       text-decoration: none;
     }
     .ig-link:hover { opacity: 0.6; }
+    .ig-short { display: none; }
 
     /* Proportionaler Hero-Container: 1440×644 → 44.72% */
     .hero-stage {
@@ -242,13 +243,13 @@
     .meta-body {
       font-family: 'Inter', sans-serif;
       font-size: clamp(12px, 1.25vw, 18px);  /* 18/1440 */
-      font-weight: 600;
+      font-weight: 400;
       line-height: 1.45;
       color: var(--navy);
     }
 
     .meta-body em          { font-style: italic; font-weight: 400; }
-    .meta-body strong      { font-weight: 700; }
+    .meta-body strong      { font-weight: 600; font-style: normal; }
     .meta-body a           { color: var(--navy); text-decoration: none; font-weight: 400; font-style: normal; }
     .meta-body .meta-light { font-weight: 400; }
 
@@ -403,14 +404,16 @@
       margin-top: auto;
     }
 
-    /* Öffnungszeiten: zentriert, 12px, grau (Figma: y=686px, mittig) */
+    /* Öffnungszeiten */
     .opening-hours {
       font-family: 'Inter', sans-serif;
       font-size: 12px;
       font-weight: 400;
       color: var(--grey);
-      text-align: center;
-      margin-bottom: 51px; /* 27px pad + 18px text + 51px = 96px → "Eine Werkschau" */
+      letter-spacing: -0.12px;
+      text-align: left;
+      padding: 0 var(--pad);
+      margin-bottom: 40px;
     }
 
     .bio-text {
@@ -553,46 +556,80 @@
 
     @media (max-width: 560px) {
       :root { --pad: 20px; }
-      .artist-name { font-size: 16px; }
-      .ig-link     { display: none; }
 
-      .stage-image  { width: 92%; }
+      /* ── HERO HEADER ── */
+      .artist-name { font-size: 20px; text-align: center; }
+      /* IG: nur "IG" zeigen, oben rechts */
+      .ig-link {
+        display: block;
+        position: absolute;
+        left: 360px;
+        top: 15px;
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--navy);
+      }
+      .ig-link:hover { font-weight: 700; opacity: 1; }
+      .ig-full { display: none; }
+      .ig-short { display: inline; }
 
-      /* Flyer-Bild auf Mobile etwas breiter + nach links */
-      .stage-flyer { width: 44%; left: -15px; }
+      /* ── HERO STAGE ── */
+      .hero-stage { min-height: 360px; aspect-ratio: auto; }
 
-      /* Stage höher damit die großen Wörter Platz haben */
-      .hero-stage { min-height: 460px; }
+      /* Flyer-Bild (herobild02_mobile): links oben, px-genau */
+      .stage-flyer {
+        left: 40px; top: 0;
+        width: 241px; height: 346px;
+        animation: none; opacity: 1;
+      }
+      .stage-flyer img { animation: none; }
 
-      /* Titelwörter: größer + neue Positionen mit mehr Abstand */
-      .hero-title span { font-size: 58px !important; }
-      .t-und  { top: 7%;  left: 5%; }
-      .t-wenn { top: 34%; left: 4%; }
-      .t-ich  { top: 62%; left: 18%; }
+      /* Hauptbild (herobild_mobile): überlappend rechts-unten */
+      .stage-image {
+        left: 96px; top: 155px;
+        width: 277px; height: 276px;
+        transform: none;
+      }
+      .stage-ken { animation: none; width: 100%; height: 100%; }
+      #heroImg   { width: 100%; height: 100%; object-fit: cover; }
 
-      /* Labels sichtbar lassen, kleiner */
-      .hero-label { font-size: clamp(10px, 3vw, 14px); }
+      /* ── TITELWÖRTER — exakt nach Figma ── */
+      .hero-title span {
+        font-size: 65px !important;
+        letter-spacing: 3.25px;
+      }
+      .t-und  { top: 40px;  left: 40px; }
+      .t-wenn { top: 140px; left: 90px; }
+      .t-ich  { top: 250px; left: 50px; }
 
-      /* Meta: aus dem Stage herausgezogen, normal fließend unter dem Bild */
+      /* ── LABELS — exakt nach Figma ── */
+      .hero-label { font-size: 20px; }
+      .hero-label-werkschau { left: 180px; top: 125px; transform: none; }
+      .hero-label-date      { left: 40px;  top: 230px; }
+
+      /* ── META unter Bild — exakt nach Figma ── */
       .hero-meta {
         position: static;
         opacity: 1;
         animation: none;
         grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 24px var(--pad) 0;
+        gap: 40px;
+        padding: 12px 20px 0;
       }
-      .meta-body { font-size: 14px; }
+      .meta-body { font-size: 18px; line-height: 1.5; }
 
+      /* Mobile-Reihenfolge: 04.09 | 18.09 | Magazin */
+      .hero-meta .meta-block:nth-child(1) { order: 3; }           /* Magazin → last */
+      .hero-meta .meta-block:nth-child(2) { order: 1; }           /* 04.09  → first, X:22 */
+      .hero-meta .meta-block:nth-child(3) { order: 2; margin-left: 72px; } /* 18.09 → second, X:92 */
+
+      /* ── REST ── */
       .werkbilder { grid-template-columns: 1fr; row-gap: 30px; }
       .werkbild-gap { display: none; }
-
-      /* Credit unter Portrait anzeigen, das in bio-text verstecken */
       .bio-credit--mobile  { display: block; margin-top: 8px; }
       .bio-credit--desktop { display: none; }
-
       .section-title,
-      .kontakt h2    { font-size: 22px; }
+      .kontakt h2 { font-size: 22px; }
     }
   </style>
 </head>
@@ -605,19 +642,28 @@
       <span class="artist-name">Patricia Reschenbach</span>
       <a class="ig-link"
          href="https://www.instagram.com/patricia.reschenbach/"
-         target="_blank" rel="noopener">IG: @patricia.reschenbach</a>
+         target="_blank" rel="noopener">
+        <span class="ig-full">IG: @patricia.reschenbach</span>
+        <span class="ig-short">IG</span>
+      </a>
     </header>
 
     <div class="hero-stage">
 
-      <!-- Flyer-Bild: links oben, randlos -->
+      <!-- Flyer-Bild: desktop=herobild_flyer, mobile=herobild02_mobile -->
       <div class="stage-flyer">
-        <img src="images/herobild_flyer.jpg" alt="">
+        <picture>
+          <source media="(max-width: 560px)" srcset="images/herobild02_mobile.jpg">
+          <img src="images/herobild_flyer.jpg" alt="">
+        </picture>
       </div>
 
       <div class="stage-image">
         <div class="stage-ken">
-          <img src="images/herobild.jpg" id="heroImg" alt="">
+          <picture>
+            <source media="(max-width: 560px)" srcset="images/herobild_mobile.jpg">
+            <img src="images/herobild.jpg" id="heroImg" alt="">
+          </picture>
         </div>
       </div>
 
@@ -633,32 +679,30 @@
     </div><!-- /hero-stage -->
 
     <!-- Meta-Infos: desktop=absolut im Stage, mobile=normal unter Bild -->
+    <!-- HTML-Reihenfolge: Magazin | 04.09 | 18.09 — Mobile-Reihenfolge via CSS order -->
     <div class="hero-meta">
-      <div class="meta-block">
+      <div class="meta-block"><!-- Magazin: mobile order 3 -->
         <p class="meta-body">
-          <strong>Magazin</strong><br>
-          Mayergasse 3<br>
-          <span class="meta-light">1020 Wien</span>
+          <strong>Magazin Mayergasse</strong><br>
+          Ausstellungsraum<br><br>
+          <strong>Mayergasse 3</strong><br>
+          1020 Wien Österreich
         </p>
       </div>
-      <div class="meta-block">
+      <div class="meta-block"><!-- 04.09: mobile order 1 -->
         <p class="meta-body">
-          <strong>04.09.2026</strong><br>
-          um 18:00 Uhr<br>
-          <em>Schreibperformance:</em><br>
+          <em>am 04.09.2026</em><br>
+          <em>um 18:00 Uhr</em><br><br>
+          <em>Schreibperformance</em><br>
           <strong>Patricia Reschenbach</strong>
         </p>
       </div>
-      <div class="meta-block">
+      <div class="meta-block"><!-- 18.09: mobile order 2 -->
         <p class="meta-body">
-          <strong>18.09.2026</strong><br>
-          ab 18:00 Uhr<br>
-          <em>Lesung:</em> <strong>Leah Luna Winzely</strong><br>
-          <strong>Rina Kaçinari</strong>
-          (<a href="http://rinakacinari.com/" target="_blank" rel="noopener">rinakacinari.com</a>)<br>
-          <br>
-          um 18:30 Uhr <em>Performance:</em><br>
-          <strong>Patricia Reschenbach</strong>
+          <em>am</em> <strong>18.09.2026</strong><br>
+          <em>ab</em> <strong>18:00 Uhr</strong><br><br>
+          <em>Lyrik</em> <strong>Leah Luna Winzely</strong><br>
+          <em>Cello und Gesang</em> <strong>Rina Kaçinari</strong>
         </p>
       </div>
     </div>
@@ -668,7 +712,7 @@
   <!-- ── WERKSCHAU ── -->
   <section class="werkschau">
 
-    <p class="opening-hours">Von 18:00–20:00 Uhr ist das Magazin ab ___ geöffnet und die Künstlerin anwesend.</p>
+    <p class="opening-hours">offen von mi–fr ab 18:00<br>in Anwesenheit der Künstlerin</p>
     <h2 class="section-title">Eine Werkschau</h2>
 
     <div class="intro-grid">
