@@ -298,25 +298,25 @@
 
     .intro-text em { font-style: italic; }
 
-    /* Programm-Hinweise: 3 Spalten (Figma: Inter Regular 16px, navy) */
+    /* Programm-Hinweise: einzelner Satz (Figma: Inter Regular 16px, navy) */
     .program-notes {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 29px;
       margin-bottom: 60px;
     }
 
     .program-notes p {
       font-family: 'Inter', sans-serif;
-      font-size: 16px;
+      font-size: 1rem;
       font-weight: 400;
       color: var(--navy);
-      line-height: 1.55;
+      line-height: normal;
+      letter-spacing: -0.01rem;
+      max-width: 40.9375rem;
+      white-space: nowrap;
     }
 
     .program-notes .tamar {
-      color: var(--red);
-      text-decoration: none;
+      color: var(--navy);
+      text-decoration: underline;
     }
     .program-notes .tamar:hover { opacity: 0.7; }
 
@@ -350,10 +350,11 @@
 
     .werkbild-caption {
       font-family: 'Inter', sans-serif;
-      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: 400;
       color: var(--grey);
-      line-height: 1.6;
+      line-height: normal;
+      width: 12.3125rem;
       margin-top: auto; /* drückt Caption ans untere Ende des Gap-Divs = Bildunterkante */
     }
 
@@ -555,7 +556,7 @@
       .hero-meta { grid-template-columns: 1fr; gap: 8px; top: auto; bottom: 10px; }
 
       .intro-grid    { grid-template-columns: 1fr; gap: 24px; }
-      .program-notes { grid-template-columns: 1fr; gap: 16px; }
+      .program-notes p { white-space: normal; }
       .werkbilder { grid-template-columns: 1fr 1fr; }
       .werkbild-gap { display: none; }
       .kontakt-links { grid-template-columns: 1fr; gap: 12px; }
@@ -740,9 +741,7 @@
     </div>
 
     <div class="program-notes">
-      <p>Rahmenprogramm wird über Instagram &amp; undwennich.wien bekannt gegeben,</p>
       <p>Es werden Werke zu erwerben sein, die der Beratungsstelle <a class="tamar" href="https://tamar.at/" target="_blank" rel="noopener">TAMAR</a> gespendet werden.</p>
-      <p>da die Künstlerin auch Lehrerin ist und alles parallel laufen wird.</p>
     </div>
 
   </section>
@@ -807,7 +806,7 @@
       <div class="legal-inner">
         <div class="legal-col">
           Patricia Reschenbach<br>
-          Zirkusgasse 35/9<br>
+          Zirkusgasse 35/10<br>
           1020 Wien<br>
           Österreich<br><br>
           E-Mail: patricia.reschenbach@chello.at<br>
@@ -815,13 +814,12 @@
         </div>
         <div class="legal-col">
           Unternehmensgegenstand: Bildende Kunst / Künstlerin<br><br>
-          Mitglied der Wirtschaftskammer Wien<br>
-          Fachgruppe Kunst, Musik, unterhaltende Tätigkeit<br><br>
+          Mitglied der IG bildenden Kunst<br><br>
           Aufsichtsbehörde: Magistrat der Stadt Wien
         </div>
         <div class="legal-col">
           Inhaltlich Verantwortliche gemäß § 18 MedienG:<br>
-          Patricia Reschenbach<br><br>
+          Maga art Patricia Reschenbach<br><br>
           Urheberrecht: Alle Bilder, Texte und Inhalte dieser
           Website sind urheberrechtlich geschützt.<br><br>
           © Patricia Reschenbach
