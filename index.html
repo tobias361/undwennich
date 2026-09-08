@@ -359,6 +359,31 @@
     }
 
     /* ────────────────────────────────────────────
+       WERKSCHAU-BILDER: zweite Bildreihe
+       Figma: rollen x=278, action x=964 (1440px)
+    ──────────────────────────────────────────── */
+    .werkschau-bilder-section {
+      padding: 56px var(--pad) 0;
+    }
+
+    .werkschau-bilder {
+      display: grid;
+      /* spacer | rollen | gap | action — proportional zu Figma */
+      grid-template-columns: 17fr 32fr 19fr 32fr;
+    }
+
+    .werkschau-bild {
+      overflow: hidden;
+    }
+
+    .werkschau-bild img {
+      width: 100%;
+      aspect-ratio: 427 / 500;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ────────────────────────────────────────────
        BIOGRAFIE
     ──────────────────────────────────────────── */
     /* Row 4: Bio (659px) */
@@ -459,12 +484,7 @@
       display: none;
     }
 
-    /* ────────────────────────────────────────────
-       BIOGRAFIE — vorübergehend ausgeblendet
-    ──────────────────────────────────────────── */
-    .bio {
-      display: none;
-    }
+    /* BIOGRAFIE — aktiv */
 
     /* ────────────────────────────────────────────
        IMPRESSUM / DATENSCHUTZ (aufklappbar)
@@ -635,6 +655,9 @@
       /* ── REST ── */
       .werkbilder { grid-template-columns: 1fr; row-gap: 30px; }
       .werkbild-gap { display: none; }
+      .werkschau-bilder-section { padding: 30px var(--pad) 0; }
+      .werkschau-bilder { grid-template-columns: 1fr; row-gap: 30px; }
+      .werkschau-spacer, .werkschau-gap { display: none; }
       .bio-credit--mobile  { display: block; margin-top: 8px; }
       .bio-credit--desktop { display: none; }
       .section-title,
@@ -677,7 +700,7 @@
       </div>
 
       <span class="hero-label hero-label-werkschau">werkschau</span>
-      <span class="hero-label hero-label-date">04.09.–19.09. 2026</span>
+      <span class="hero-label hero-label-date">04.09.–18.09. 2026</span>
 
       <h1 class="hero-title">
         <span class="t-und">und</span>
@@ -761,6 +784,20 @@
     </div>
   </section>
 
+  <!-- ── WERKSCHAU-BILDER (zweite Reihe) ── -->
+  <section class="werkschau-bilder-section">
+    <div class="werkschau-bilder">
+      <div class="werkschau-spacer"></div>
+      <div class="werkschau-bild">
+        <img src="images/werkschau_rollen.jpg" alt="Patricia Reschenbach – Werkschau">
+      </div>
+      <div class="werkschau-gap"></div>
+      <div class="werkschau-bild">
+        <img src="images/werkschau_action.jpg" alt="Patricia Reschenbach – Werkschau">
+      </div>
+    </div>
+  </section>
+
   <!-- ── BIOGRAFIE ── -->
   <section class="bio">
     <div class="bio-inner">
@@ -780,8 +817,8 @@
           Reflexion — über Körper, Scham, Verlust und weibliche Selbstermächtigung.<br><br>
           Seit 2020 teilt sie ihr Atelier in der Zirkusgasse 35 mit Emma Kersten-Weymayr.
         </p>
-        <a class="bio-pdf" href="images/BIO_Patricia Reschenbach.pdf" target="_blank" rel="noopener">
-          BIO_Patricia Reschenbach.pdf
+        <a class="bio-pdf" href="images/CV_2026_Reschenbach.pdf" target="_blank" rel="noopener">
+          CV_2026_Reschenbach.pdf
         </a>
         <p class="bio-credit bio-credit--desktop">Credit Maria Blum (2025)</p>
       </div>
